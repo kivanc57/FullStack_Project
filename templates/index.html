@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% block head %}
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>ALG4 FullStack Project</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Link CSS and Bootstrap-->
+        <link href="css/styles.css" rel="stylesheet"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        {% endblock %}
+    </head>
+    <body id="page-top">
+
+        
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="mainNav">
+            <div class="container px-4">
+                <a class="navbar-brand" href="#page-top">ALG4 FullStack Project</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#filetextsearch">File Text Search</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#lingdata">Linguistic Data of Text</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Header-->
+        <header class="bg-primary bg-gradient text-white p-5">
+            <div class="container-fluid text-center">
+                <h1 class="fw-bolder">Welcome to my FullStack project for ALG4 course</h1>
+                <p class="lead">This could be a real project in the future!</p>
+                <a class="btn btn-lg btn-light" href="#about">Start scrolling!</a>
+            </div>
+        </header>
+
+        <!-- About -->
+        <section id="about">
+            <div class="container-fluid mt-5 p-5">
+                <div class="row gx-4 justify-content-center">
+                    <div class="col-lg-8">
+                        <h2>About this project</h2>
+                        <p class="lead">ALG4 is the abbreviation of ALG which stands for 'Algoritmické zpracování jazyka'in Czech. One can translate it to English as 'Algorithmic language processing'.
+                            This website is my project for the zápočet (performance exam) of ALG4 where we have to deploy a website as a final project using:</p>
+                        <ul>
+                            <li>HTML</li>
+                            <li>CSS</li>
+                            <li>Bootstrap</li>
+                            <li>JavaScript</li>
+                            <li>Flask on Python</li>
+                            <li>Jinja2</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <!-- File Text Search API-->
+
+        {% block file_text_search %}{% endblock %}
+        <section class="bg-light" id="filetextsearch">
+            <div class="container-fluid mb-5 mt-5 p-5">
+                <div class="row gx-4 justify-content-center">
+                    <div class="col-lg-8">
+                        <h2>File Text Search API</h2>
+                        <p class="lead mb-5">This application is aimed to find a text where a word or phrase is given. After the user gives the input, the application finds the containing text within its sentence that possesses the user input.</p>
+
+                        <form action="{{ url_for('file_text_search') }}" method="post">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control mb-3" id="directoryName" name="directory_name" placeholder="placeholder" required>
+                                <label for="directoryName">Enter Directory Name</label>
+                            </div>
+
+                            <div class="form-floating mb-5">
+                                <input type="text" class="form-control" id="wtInput" name="word_phrase_input" placeholder="placeholder" required>
+                                <label for="wtInput">Enter Word/Phrase</label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Check</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        </section>
+        <!-- Linguistic Data of Text API-->
+        <section id="lingdata">
+            <div class="container-fluid p-5">
+                <div class="row gx-4 justify-content-center">
+                    <div class="col-lg-8">
+                        <h2>Linguistic Data of Text API</h2>
+                        <p class="lead mb-5">This application is aimed to find and illustrate the amount of sentence, the amount of word, the size of the dictionary with interactive graphics.</p>
+
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="inputText">
+                            <label class="input-group-text bg-primary text-light" for="inputText">Analyze Text</label>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            {% block footer %}
+            <div class="container px-4"><p class="m-0 text-center text-white">Copyright &copy; Kıvanç Gördü | All Rights Reserved</p></div>
+            {% endblock %}
+        </footer>
+        
+
+
+
+
+        <!-- Core theme JS-->
+        <script src="static/wordSearch.js"></script>
+        <script src="static/fileAnalyze.js"></script>
+    </body>
+</html>
