@@ -1,25 +1,26 @@
-#Import libraries
+# Import libraries
 from flask import Flask, render_template, request
 
-
-#Start Flask
+# Start Flask
 app = Flask(__name__)
 
-#Global Variables for Text File Search API
+# Global Variables for Text File Search API
 directoryName, wtInput = None, None
 
-#Global Variable for Linguistic Data of Text API
+# Global Variable for Linguistic Data of Text API
 inputText = None
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('')
+    return render_template('index.html')
 
-"""app.route('/fileTextSearch.html', methods=['GET', 'POST'])
+@app.route('/file_analyze', methods=['GET', 'POST'])
 def file_analyze():
+    return render_template('file_analyze.html')
 
+@app.route('/linguistic_data', methods=['GET', 'POST'])
+def linguistic_data():
+    return render_template('linguistic_data.html')
 
-@app.route('/linguisticDataText.html', methods=['GET', 'POST'])
-def linguistic_data_text():"""
-
-if __name__ == '__main__': 
+if __name__ == '__main__':
     app.run(debug=True)

@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>ALG4 FullStack Project</title>
+        {% block title %}ALG4 FullStack Project{% endblock %}
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Link CSS and Bootstrap-->
         <link href="css/styles.css" rel="stylesheet"/>
@@ -64,7 +64,6 @@
         
         <!-- File Text Search API-->
 
-        {% block file_text_search %}{% endblock %}
         <section class="bg-light" id="filetextsearch">
             <div class="container-fluid mb-5 mt-5 p-5">
                 <div class="row gx-4 justify-content-center">
@@ -72,7 +71,7 @@
                         <h2>File Text Search API</h2>
                         <p class="lead mb-5">This application is aimed to find a text where a word or phrase is given. After the user gives the input, the application finds the containing text within its sentence that possesses the user input.</p>
 
-                        <form action="{{ url_for('file_text_search') }}" method="post">
+                        <form action="{{ url_for('file_analyze') }}" method="post">
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control mb-3" id="directoryName" name="directory_name" placeholder="placeholder" required>
                                 <label for="directoryName">Enter Directory Name</label>
@@ -91,24 +90,30 @@
         </section>
 
 
-
-        </section>
         <!-- Linguistic Data of Text API-->
+        
         <section id="lingdata">
             <div class="container-fluid p-5">
                 <div class="row gx-4 justify-content-center">
                     <div class="col-lg-8">
                         <h2>Linguistic Data of Text API</h2>
                         <p class="lead mb-5">This application is aimed to find and illustrate the amount of sentence, the amount of word, the size of the dictionary with interactive graphics.</p>
-
-                        <div class="input-group">
-                            <input type="file" class="form-control" id="inputText">
-                            <label class="input-group-text bg-primary text-light" for="inputText">Analyze Text</label>
-                          </div>
+                        <form action="{{ url_for('linguistic_data') }}" method="post">
+                            <div class="form-floating mb-3">
+                                <div class="input-group">
+                                    <input type="file" class="form-control" id="inputText">
+                                    <label class="input-group-text bg-primary text-light" for="inputText">Analyze Text</label>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </section>
+        
+
+
+
 
         <!-- Footer-->
         <footer class="py-5 bg-dark">
