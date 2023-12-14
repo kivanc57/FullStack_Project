@@ -1,7 +1,11 @@
-{% extends "templates/index.html" %}
+{% extends "index.html" %}
 
-{% block title %}Results{% endblock %} 
+{% block head %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/fileAnalyze.js') }}"></script>
+    <title>Results</title>
+{% endblock %}
 
 {% block content %}
-
+    <h1>This is the placeholder for the content</h1>
 {% endblock %}
