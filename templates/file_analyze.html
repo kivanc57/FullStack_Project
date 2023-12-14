@@ -4,8 +4,9 @@
     {{ super() }}
     <script src="{{ url_for('static', filename='js/fileAnalyze.js') }}"></script>
     <title>Results</title>
-{% endblock %}
+{% endblock head %}
 
 {% block content %}
     <h1>This is the placeholder for the content</h1>
-{% endblock %}
+
+{% endblock content %}
