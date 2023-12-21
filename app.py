@@ -14,7 +14,7 @@ def get_form_data():
         'word_phrase_input': word_phrase_input
     }
 
-    return jsonify(data)
+    return data  # Return a dictionary instead of using jsonify
 
 # REMOVE PRINTS IN THE END
 
@@ -28,15 +28,12 @@ def index():
 
         if json_data.get('input_text'):
             try:
-                print(json_data['input_text'])
                 return render_template('file_analyze.html', input_text=json_data['input_text'])
             except Exception as e:
                 print(f'Error processing text file: {str(e)}')
 
         elif json_data.get('directory_name') and json_data.get('word_phrase_input'):
             try:
-                print(json_data['directory_name'])
-                print(json_data['word_phrase_input'])
                 return render_template('linguistic_data.html',
                                        directory_name=json_data['directory_name'],
                                        word_phrase_input=json_data['word_phrase_input'])
@@ -48,55 +45,54 @@ def index():
 
 @app.route('/file_analyze', methods=['POST'])
 def file_analyze():
-    json_data = get_form_data()
+    try:
+        json_data = get_form_data()
+        print(json_data['input_text'])
 
-    if json_data.get('input_text') is not None:
-        try:
-            print(json_data['input_text'])
-            return render_template('file_analyze.html', input_text=json_data['input_text'])
-        except Exception as e:
-            print(f'Error processing text file: {str(e)}')
+        return render_template('file_analyze.html', input_text=json_data['input_text'])
+    except Exception as e:
+        print(f'Error processing text file: {str(e)}')
 
     return render_template('file_analyze.html', input_text=None)
 
 
 @app.route('/linguistic_data', methods=['POST'])
 def linguistic_data():
-    json_data = get_form_data()
+    try:
+        import os
+        json_data = get_form_data()
+        directory_name = json_data.get('directory_name')
+        word_phrase_input = json_data.get('word_phrase_input')
+        my_sents = []
+        my_files = []
 
-    if json_data.get('directory_name') is not None and json_data.get('word_phrase_input') is not None:
-        try:
-            print(json_data['directory_name'])
-            print(json_data['word_phrase_input'])
+        for file in os.listdir(directory_name):
+            if file.endswith('.txt'):
+                text_path = os.path.join(directory_name, file)
+                with open(text_path, mode='r') as f:
+                    lines = f.readlines()
+                    for line in lines:
+                        if word_phrase_input in line:
+                            sentences = line.split('.')
+                            for sent in sentences:
+                                if word_phrase_input in sent:
+                                    if sent[0] == ' ':
+                                        sent = sent[1:]
+                                    my_sents.append(sent)
+                                    my_files.append(file)
 
-            import os, re
-            user_path = json_data.get('directory_name')
-            directory = os.listdir(user_path)
+        if my_sents:
+            my_sent = my_sents[0]
+            my_file = my_files[0]
+        else:
+            my_sent = None
+            my_file = None
 
-            word_phrase = json_data['word_phrase_input']
-            
-            for fname in directory:
-                file_path = os.path.join(user_path + fname)
+        return render_template('linguistic_data.html', my_sent=my_sent, my_file=my_file)
+    except Exception as e:
+        print(f'Error processing search: {str(e)}')
 
-                if os.path.isFile(file_path):
-                    with open(user_path, mode='r', encoding='utf-8') as f:
-                        if word_phrase in f.read():
-                            expression = '[^.]* ' + word_phrase ' [^.]*\.'
-                            founding = re.search(expression, f)
-                            word = founding.string 
-
-                        
-            
-
-
-
-            return render_template('linguistic_data.html',
-                                   directory_name=json_data['directory_name'],
-                                   word_phrase_input=json_data['word_phrase_input'])
-        except Exception as e:
-            print(f'Error processing search: {str(e)}')
-
-    return render_template('linguistic_data.html', dir_word=None)
+    return render_template('linguistic_data.html', my_sent=None, my_file=None)
 
 if __name__ == '__main__':
     app.run(debug=True)
