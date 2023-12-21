@@ -53,7 +53,7 @@
                 <div class="row gx-4 justify-content-center">
                     <div class="col-lg-8">
                         <h2>About this project</h2>
-                        <p class="lead">ALG4 is the abbreviation of ALG which stands for 'Algoritmické zpracování jazyka'in Czech. One can translate it to English as 'Algorithmic language processing'.
+                        <p class="lead">ALG4 is the abbreviation of ALG which stands for 'Algoritmické zpracování jazyka' in Czech. One can translate it to English as 'Algorithmic language processing'.
                             This website is my project for the zápočet (performance exam) of ALG4 where we have to deploy a website as a final project using:</p>
                         <ul>
                             <li>HTML</li>
@@ -80,12 +80,12 @@
 
                         <form action="{{ url_for('file_analyze') }}" method="post">
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control mb-3" id="directoryName" name="directory_name" placeholder="placeholder" required>
+                                <input type="text" class="form-control mb-3" id="directoryName" name="directory_name" placeholder="placeholder">
                                 <label for="directoryName">Enter Directory Name</label>
                             </div>
 
                             <div class="form-floating mb-5">
-                                <input type="text" class="form-control" id="wtInput" name="word_phrase_input" placeholder="placeholder" required>
+                                <input type="text" class="form-control" id="wtInput" name="word_phrase_input" placeholder="placeholder">
                                 <label for="wtInput">Enter Word/Phrase</label>
                             </div>
 
@@ -105,7 +105,7 @@
                         <h2>Linguistic Data of Text API</h2>
                         <p class="lead mb-5">This application is aimed to find and illustrate the amount of sentence, the amount of word, the size of the dictionary with interactive graphics.</p>
                         <form action="{{ url_for('linguistic_data') }}" method="post" enctype="multipart/form-data">
-                            <input type="file" name="input_file" accept=".txt" required>
+                            <input type="file" name="input_file" accept=".txt">
                             <button type="submit" class="btn btn-primary">Analyze Text</button>
                         </form>
                     </div>

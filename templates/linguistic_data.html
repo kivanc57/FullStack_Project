@@ -7,6 +7,17 @@
 {% endblock head %}
 
 {% block content %}
-    <p>My Sentence: {{ my_sent }}</p>
-    <p>My File: {{ my_file }}</p>
+    {% if my_sents %}
+        <h2>Results</h2>
+        <ul>
+            {% for i in range(my_sents|length) %}
+                <li>
+                    <p>My Sentence: {{ my_sents[i] }}</p>
+                    <p>My File: {{ my_files[i] }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No results found</p>
+    {% endif %}
 {% endblock content %}

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -14,9 +14,7 @@ def get_form_data():
         'word_phrase_input': word_phrase_input
     }
 
-    return data  # Return a dictionary instead of using jsonify
-
-# REMOVE PRINTS IN THE END
+    return data
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -27,72 +25,59 @@ def index():
         json_data = get_form_data()
 
         if json_data.get('input_text'):
-            try:
-                return render_template('file_analyze.html', input_text=json_data['input_text'])
-            except Exception as e:
-                print(f'Error processing text file: {str(e)}')
-
+            return render_template('file_analyze.html', input_text=json_data['input_text'])
         elif json_data.get('directory_name') and json_data.get('word_phrase_input'):
-            try:
-                return render_template('linguistic_data.html',
-                                       directory_name=json_data['directory_name'],
-                                       word_phrase_input=json_data['word_phrase_input'])
-            except Exception as e:
-                print(f'Error processing search: {str(e)}')
+            return redirect(url_for('linguistic_data',
+                                    directory_name=json_data['directory_name'],
+                                    word_phrase_input=json_data['word_phrase_input']))
 
     return render_template('index.html')
 
-
 @app.route('/file_analyze', methods=['POST'])
 def file_analyze():
-    try:
-        json_data = get_form_data()
-        print(json_data['input_text'])
+    import os
+    directory_name = request.form.get('directory_name')
+    word_phrase_input = request.form.get('word_phrase_input')
+    my_sents = []
+    my_files = []
 
-        return render_template('file_analyze.html', input_text=json_data['input_text'])
-    except Exception as e:
-        print(f'Error processing text file: {str(e)}')
-
-    return render_template('file_analyze.html', input_text=None)
+    for file in os.listdir(directory_name):
+        if file.endswith('.txt'):
+            text_path = os.path.join(directory_name, file)
+            with open(text_path, mode='r') as f:
+                lines = f.readlines()
+                for line in lines:
+                    if word_phrase_input in line:
+                        sentences = line.split('.')
+                        for sent in sentences:
+                            if word_phrase_input in sent:
+                                if sent[0] == ' ':
+                                    sent = sent[1:]
+                                my_sents.append(sent)
+                                my_files.append(file)
+        
+    return render_template('file_analyze.html', my_sents=my_sents, my_files=my_files)
 
 
 @app.route('/linguistic_data', methods=['POST'])
 def linguistic_data():
-    try:
-        import os
-        json_data = get_form_data()
-        directory_name = json_data.get('directory_name')
-        word_phrase_input = json_data.get('word_phrase_input')
-        my_sents = []
-        my_files = []
+    if 'input_file' in request.files:
+        uploaded_file = request.files['input_file']
 
-        for file in os.listdir(directory_name):
-            if file.endswith('.txt'):
-                text_path = os.path.join(directory_name, file)
-                with open(text_path, mode='r') as f:
-                    lines = f.readlines()
-                    for line in lines:
-                        if word_phrase_input in line:
-                            sentences = line.split('.')
-                            for sent in sentences:
-                                if word_phrase_input in sent:
-                                    if sent[0] == ' ':
-                                        sent = sent[1:]
-                                    my_sents.append(sent)
-                                    my_files.append(file)
+        if uploaded_file.filename != '':
+            file_content = uploaded_file.read().decode('utf-8')
 
-        if my_sents:
-            my_sent = my_sents[0]
-            my_file = my_files[0]
-        else:
-            my_sent = None
-            my_file = None
+            
+            
 
-        return render_template('linguistic_data.html', my_sent=my_sent, my_file=my_file)
-    except Exception as e:
-        print(f'Error processing search: {str(e)}')
+            return render_template('linguistic_data.html', file_content=file_content)
 
-    return render_template('linguistic_data.html', my_sent=None, my_file=None)
+    json_data = get_form_data()
+    input_text = json_data.get('input_text')
+    
+    # For demonstration purposes, I'm just printing the input_text
+    print(f'File analysis logic for: {input_text}')
+    return render_template('file_analyze.html', input_text=input_text)
 
 if __name__ == '__main__':
     app.run(debug=True)
