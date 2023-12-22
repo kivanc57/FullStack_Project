@@ -2,22 +2,50 @@
 
 {% block head %}
     {{ super() }}
-    <script src="{{ url_for('static', filename='js/wordSearch.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fileAnalyze.js') }}"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <title>Results</title>
 {% endblock head %}
 
 {% block content %}
-    {% if my_sents %}
-        <h2>Results</h2>
-        <ul>
-            {% for i in range(my_sents|length) %}
-                <li>
-                    <p>My Sentence: {{ my_sents[i] }}</p>
-                    <p>My File: {{ my_files[i] }}</p>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No results found</p>
-    {% endif %}
+    <h1>This is the placeholder for the content</h1>
+    <span>{{ input_text }}</span>
+
+    <script>
+        // JavaScript code to use the data passed from Flask
+        var tokenAmount = {{ token_amount }};
+        var lemmaDictSize = {{ lemma_dict_size }};
+        var sentLens = {{ sent_lens | tojson }};
+
+        // Log the values to the console
+        console.log("Number of words:", tokenAmount);
+        console.log("Dict size:", lemmaDictSize);
+        console.log("Sentence lengths:", sentLens);
+
+        // Code to generate graphs using Plotly or any other chart library
+        // Example: Create a bar chart
+        var data = [{
+            x: Array.from({ length: sentLens.length }, (_, i) => i),
+            y: sentLens,
+            type: 'bar',
+            marker: {
+                color: 'blue'
+            }
+        }];
+
+        var layout = {
+            title: 'Histogram of Sentence Lengths',
+            xaxis: {
+                title: 'Sentence Index'
+            },
+            yaxis: {
+                title: 'Number of Words in Sentence'
+            }
+        };
+
+        Plotly.newPlot('sentenceLengthChart', data, layout);
+    </script>
+
+    <!-- HTML container for the chart -->
+    <div id="sentenceLengthChart"></div>
 {% endblock content %}

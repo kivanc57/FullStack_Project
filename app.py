@@ -65,19 +65,48 @@ def linguistic_data():
         uploaded_file = request.files['input_file']
 
         if uploaded_file.filename != '':
+            import spacy
+            nlp = spacy.load("en_core_web_sm")
+
             file_content = uploaded_file.read().decode('utf-8')
+            doc = nlp(file_content)
 
-            
-            
+            sent_amount = 0
+            token_amount = 0
+            lemma_dict = list()
+            sent_len = 0
+            i = -1
 
-            return render_template('linguistic_data.html', file_content=file_content)
+            sent_amount = len(list(doc.sents))
+            sent_lens = [0] * sent_amount
+                
+            for token in doc:
+                if token.is_alpha:
+                    token_amount += 1
+                    sent_len += 1
+                    if token.lemma_ not in lemma_dict:
+                        lemma_dict.append(token.lemma_)
+                    if token.is_sent_start:
+                        i += 1
+
+                elif token.text == '.': #Could be other punctuations in a sentence so not used punc
+                    sent_lens[i] = sent_len
+                    sent_len = 0
+
+            # Update the variables to be passed to the template
+            token_amount = token_amount
+            lemma_dict_size = len(set(lemma_dict))
+            sent_lens = sent_lens
 
     json_data = get_form_data()
     input_text = json_data.get('input_text')
     
     # For demonstration purposes, I'm just printing the input_text
     print(f'File analysis logic for: {input_text}')
-    return render_template('file_analyze.html', input_text=input_text)
+    return render_template('linguistic_data.html', file_content=file_content,
+                           token_amount=token_amount, lemma_dict_size=lemma_dict_size,
+                           sent_lens=sent_lens)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
